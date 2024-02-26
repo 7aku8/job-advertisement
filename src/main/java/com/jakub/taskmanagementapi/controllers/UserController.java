@@ -3,6 +3,7 @@ package com.jakub.taskmanagementapi.controllers;
 import com.jakub.taskmanagementapi.models.User;
 import com.jakub.taskmanagementapi.services.UserServiceImpl;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -16,14 +17,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    private final UserServiceImpl userService;
-
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserServiceImpl userService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody User user) {
+        userService.registerUser(user);
+
         return ResponseEntity.ok("User registered successfully.");
     }
 

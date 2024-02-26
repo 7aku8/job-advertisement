@@ -3,6 +3,8 @@ package com.jakub.taskmanagementapi.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.UUID;
 
@@ -27,6 +29,14 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private String updatedAt;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private String createdAt;
 
     public User() {
     }

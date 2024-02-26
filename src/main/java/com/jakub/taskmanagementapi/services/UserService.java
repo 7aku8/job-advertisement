@@ -1,5 +1,7 @@
 package com.jakub.taskmanagementapi.services;
 
+import com.jakub.taskmanagementapi.models.User;
+
 public interface UserService {
-    void registerUser(String firstName, String lastName, String email, String password);
+    void registerUser(User user);
 }
