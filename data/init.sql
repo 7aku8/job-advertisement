@@ -1,37 +1,55 @@
-CREATE EXTENSION IF NOT EXISTS citext;
+CREATE
+EXTENSION IF NOT EXISTS citext;
 
-CREATE TYPE "statuses" AS ENUM (
-  'TODO',
-  'IN_PROGRESS',
-  'DONE'
+CREATE TABLE "users"
+(
+    "id"         uuid PRIMARY KEY NOT NULL,
+    "first_name" citext           NOT NULL,
+    "last_name"  citext           NOT NULL,
+    "email"      citext           NOT NULL,
+    "password"   varchar          NOT NULL,
+    "created_at" timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE "priorities" AS ENUM (
-  'LOW',
-  'MEDIUM',
-  'HIGH'
+CREATE TABLE "admins"
+(
+    "id"         uuid PRIMARY KEY NOT NULL,
+    "first_name" citext           NOT NULL,
+    "last_name"  citext           NOT NULL,
+    "email"      citext           NOT NULL,
+    "password"   varchar          NOT NULL,
+    "created_at" timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE "users" (
-                         "id" uuid PRIMARY KEY NOT NULL,
-                         "first_name" citext NOT NULL,
-                         "last_name" citext NOT NULL,
-                         "email" citext NOT NULL,
-                         "password" varchar NOT NULL,
-                         "created_at" timestamp,
-                         "updated_at" timestamp
+CREATE TABLE "job_advertisements"
+(
+    "id"          uuid PRIMARY KEY NOT NULL,
+    "status"      varchar(30) NOT NULL DEFAULT 'REVIEW',
+    "user_id"     uuid             NOT NULL,
+    "reviewer_id" uuid              NOT NULL,
+    "title"       citext           NOT NULL,
+    "description" varchar          NOT NULL,
+    "created_at"  timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at"  timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deleted_at"  timestamp
 );
 
-CREATE TABLE "tasks" (
-                         "id" uuid PRIMARY KEY NOT NULL,
-                         "user_id" uuid NOT NULL,
-                         "status" statuses NOT NULL DEFAULT 'TODO',
-                         "title" varchar NOT NULL,
-                         "description" varchar NOT NULL,
-                         "priority" priorities,
-                         "deadline" timestamp
-);
+ALTER TABLE "job_advertisements"
+    ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
-ALTER TABLE "tasks" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+ALTER TABLE "job_advertisements"
+    ADD FOREIGN KEY ("reviewer_id") REFERENCES "admins" ("id");
 
-ALTER TABLE "users" ADD CONSTRAINT "unique_email" UNIQUE ("email");
+-- Add unique constraint to email
+ALTER TABLE "users"
+    ADD CONSTRAINT "unique_user_email" UNIQUE ("email");
+
+-- Add unique constraint to email
+ALTER TABLE "admins"
+    ADD CONSTRAINT "unique_admin_email" UNIQUE ("email");
+
+-- Make job advertisement title unique
+ALTER TABLE "job_advertisements"
+    ADD CONSTRAINT "unique_title" UNIQUE ("title");
