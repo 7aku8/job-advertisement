@@ -16,7 +16,7 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @Validated
-@RequestMapping("/api/v1/tasks")
+@RequestMapping("/api/v1/job-advertisements")
 public class JobAdvertisementController {
     private final JobAdvertisementService jobAdvertisementService;
 

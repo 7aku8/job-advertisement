@@ -1,5 +1,5 @@
-CREATE
-EXTENSION IF NOT EXISTS citext;
+CREATE EXTENSION IF NOT EXISTS citext;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE "roles"
 (
@@ -42,7 +42,7 @@ ALTER TABLE "job_advertisements"
     ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
 ALTER TABLE "job_advertisements"
-    ADD FOREIGN KEY ("reviewer_id") REFERENCES "admins" ("id");
+    ADD FOREIGN KEY ("reviewer_id") REFERENCES "users" ("id");
 
 -- Add unique constraint to email
 ALTER TABLE "users"
@@ -55,3 +55,17 @@ ALTER TABLE "job_advertisements"
 -- Make role name unique
 ALTER TABLE "roles"
     ADD CONSTRAINT "unique_role_name" UNIQUE ("name");
+
+-- Insert Roles
+INSERT INTO "roles" ("id", "name") VALUES (uuid_generate_v4(), 'ADMIN');
+INSERT INTO "roles" ("id", "name") VALUES (uuid_generate_v4(), 'USER');
+
+-- Insert Sample Users
+INSERT INTO "users" VALUES
+(uuid_generate_v4(), 'Jan', 'El', 'admin@gmail.com', '$2a$10$gqHrslMttQWSsDSVRTK1OehkkBiXsJ/a4z2OURU./dizwOQu5Lovu'),
+(uuid_generate_v4(), 'Krzysztof', 'Ko', 'test@gmail.com', '$2a$12$TYSPPDsgR1T9vpgMSavOteZoqzjGVLt7rzsqKLrGL4oQdE3rWDNru');
+
+-- Insert User Roles
+INSERT INTO "user_roles" VALUES
+((SELECT "id" FROM "users" WHERE "email" = 'admin@gmail.com'), (SELECT "id" FROM "roles" WHERE "name" = 'ADMIN')),
+((SELECT "id" FROM "users" WHERE "email" = 'test@gmail.com'), (SELECT "id" FROM "roles" WHERE "name" = 'USER'));

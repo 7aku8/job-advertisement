@@ -46,7 +46,7 @@ public class JobAdvertisement {
 
     @ManyToOne
     @JoinColumn(name = "reviewer_id", referencedColumnName = "id", nullable = false)
-    private Admin reviewer;
+    private User reviewer;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
