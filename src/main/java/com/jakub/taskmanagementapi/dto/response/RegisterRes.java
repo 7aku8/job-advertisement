@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LoginRes {
+public class RegisterRes {
     private String email;
     private String message;
 }
