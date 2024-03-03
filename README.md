@@ -35,17 +35,4 @@ The application will be accessible at `http://localhost:8080`.
 
 ## API Endpoints
 
-- `POST /api/v1/auth/login`: Authenticate a user.
-- `POST /api/v1/auth/register`: Register a new user.
-- `POST /api/v1/jobs`: Create a new job advertisement (requires admin privileges).
-- `GET /api/v1/jobs`: Get a list of all verified job advertisements.
-
-Please refer to the API documentation for more details on the request and response formats.
-
-## Contributing
-
-Please read `CONTRIBUTING.md` for details on our code of conduct, and the process for submitting pull requests to us.
-
-## License
-
-This project is licensed under the MIT License - see the `LICENSE.md` file for details.
+All available endpoints are available in exported Postman collection in the `postman` directory.
