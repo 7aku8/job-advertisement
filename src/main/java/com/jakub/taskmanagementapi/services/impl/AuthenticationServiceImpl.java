@@ -1,5 +1,6 @@
 package com.jakub.taskmanagementapi.services.impl;
 
+import com.jakub.taskmanagementapi.auth.JwtUtil;
 import com.jakub.taskmanagementapi.dto.request.LoginReq;
 import com.jakub.taskmanagementapi.models.Role;
 import com.jakub.taskmanagementapi.models.User;
@@ -14,11 +15,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,9 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final JwtUtil jwtUtil;
 
     @Override
-    public void login(LoginReq loginReq) {
+    public String login(LoginReq loginReq) {
         try {
             logger.info("Attempting authentication for user: {}", loginReq.getEmail());
 
@@ -40,9 +42,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     new UsernamePasswordAuthenticationToken(loginReq.getEmail(), loginReq.getPassword())
             );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String email = authentication.getName();
+            User user = new User();
+            user.setEmail(email);
+
+            String token = jwtUtil.createToken(user);
 
             logger.info("Authentication successful for user: {}", loginReq.getEmail());
+
+            return token;
         } catch (Exception e) {
             logger.error("Authentication failed for user: {}. Error: {}", loginReq.getEmail(), e.getMessage(), e);
             throw new RuntimeException("Authentication failed", e);
@@ -57,8 +65,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 throw new IllegalStateException("userRepository or roleRepository is null");
             }
 
-            User existingUser = userRepository.findByEmail(user.getEmail());
-            if (existingUser != null) {
+            Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+
+            if (existingUser.isPresent()) {
                 throw new RuntimeException("User with this email already exists");
             }
 
@@ -86,10 +95,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             logger.debug(user.toString());
             throw new RuntimeException("Unexpected error creating user");
         }
-    }
-
-    @Override
-    public void logout() {
-
     }
 }

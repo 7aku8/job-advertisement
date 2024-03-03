@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LoginRes {
-    private String email;
-    private String token;
+public class CreateJobRes {
+    private String jobId;
     private String message;
 }
