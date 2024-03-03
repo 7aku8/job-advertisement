@@ -6,6 +6,7 @@ import com.jakub.taskmanagementapi.dto.response.LoginRes;
 import com.jakub.taskmanagementapi.dto.response.RegisterRes;
 import com.jakub.taskmanagementapi.services.impl.AuthenticationServiceImpl;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationServiceImpl authenticationService;
-
-    public AuthenticationController(AuthenticationServiceImpl authenticationService) {
-        this.authenticationService = authenticationService;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginRes> authenticateUser(

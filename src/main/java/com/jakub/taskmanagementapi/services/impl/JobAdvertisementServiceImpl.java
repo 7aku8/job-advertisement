@@ -3,17 +3,15 @@ package com.jakub.taskmanagementapi.services.impl;
 import com.jakub.taskmanagementapi.models.JobAdvertisement;
 import com.jakub.taskmanagementapi.repositories.JobAdvertisementRepository;
 import com.jakub.taskmanagementapi.services.JobAdvertisementService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final JobAdvertisementRepository taskRepository;
-
-    public JobAdvertisementServiceImpl(JobAdvertisementRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
 
     @Override
     public JobAdvertisement createTask(JobAdvertisement task) {
