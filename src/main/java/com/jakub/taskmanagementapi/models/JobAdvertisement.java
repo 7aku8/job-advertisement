@@ -52,7 +52,4 @@ public class JobAdvertisement {
     @Column(name = "created_at")
     @CreationTimestamp
     private Date createdAt;
-
-    @Column(name = "deleted_at")
-    private Date deletedAt;
 }

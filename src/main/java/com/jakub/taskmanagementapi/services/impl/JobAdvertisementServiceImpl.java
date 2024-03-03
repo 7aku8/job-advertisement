@@ -82,17 +82,8 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         logger.info("Getting task with id: {}, and userEmail: {}", id, userEmail);
 
         try {
-            logger.info("asdfasdf" + jobAdvertisementRepository.findById(UUID.fromString("b56df952-ae47-484e-9f6b-bc3d46c4a2b6")));
-
-            JobAdvertisement job = jobAdvertisementRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
             User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
-
-            System.out.println(user.getEmail() + " " + userEmail);
-
-            if (!user.getEmail().equals(userEmail)) {
-                logger.error("Cannot get task for another user");
-                throw new RuntimeException("Cannot get task for another user");
-            }
+            JobAdvertisement job = jobAdvertisementRepository.findByIdAndUser(id, user).orElseThrow(() -> new RuntimeException("Task not found"));
 
             return new JobAdvertisementDto(
                     job.getId(),
@@ -115,13 +106,8 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
         logger.info("Deleting task with id: {}, and userEmail: {}", id.toString(), userEmail);
 
         try {
-            JobAdvertisement job = jobAdvertisementRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
             User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
-
-            if (!user.getEmail().equals(userEmail)) {
-                logger.error("Cannot delete task for another user");
-                throw new RuntimeException("Cannot delete task for another user");
-            }
+            JobAdvertisement job = jobAdvertisementRepository.findByIdAndUser(id, user).orElseThrow(() -> new RuntimeException("Task not found"));
 
             jobAdvertisementRepository.deleteById(job.getId());
         } catch (Exception e) {

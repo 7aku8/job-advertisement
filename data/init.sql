@@ -34,8 +34,7 @@ CREATE TABLE "job_advertisements"
     "title"       citext           NOT NULL,
     "description" varchar          NOT NULL,
     "created_at"  timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at"  timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "deleted_at"  timestamp
+    "updated_at"  timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE "job_advertisements"
