@@ -115,4 +115,96 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
             throw new RuntimeException("Error deleting task");
         }
     }
+
+    @Override
+    public Set<JobAdvertisementDto> getWaitingForReview() {
+        logger.info("Getting tasks waiting for review");
+
+        try {
+            return jobAdvertisementRepository.findByStatus(AdvertisementStatus.REVIEW).stream()
+                    .map(jobAdvertisement -> new JobAdvertisementDto(
+                            jobAdvertisement.getId(),
+                            jobAdvertisement.getTitle(),
+                            jobAdvertisement.getDescription(),
+                            jobAdvertisement.getStatus(),
+                            jobAdvertisement.getCreatedAt()
+                    ))
+                    .collect(Collectors.toSet());
+        } catch (Exception e) {
+            logger.error("Error getting tasks waiting for review", e);
+            throw new RuntimeException("Error getting tasks waiting for review", e);
+        }
+    }
+
+    @Override
+    public JobAdvertisementDto approve(UUID id, String userEmail) {
+        logger.info("Approving task with id: {}, and userEmail: {}", id.toString(), userEmail);
+
+        try {
+            User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
+            JobAdvertisement job = jobAdvertisementRepository.findByIdAndUser(id, user).orElseThrow(() -> new RuntimeException("Task not found"));
+
+            job.setStatus(AdvertisementStatus.PUBLISHED);
+            job.setReviewer(user);
+
+            JobAdvertisement updatedJob = jobAdvertisementRepository.save(job);
+
+            return new JobAdvertisementDto(
+                    updatedJob.getId(),
+                    updatedJob.getTitle(),
+                    updatedJob.getDescription(),
+                    updatedJob.getStatus(),
+                    updatedJob.getCreatedAt()
+            );
+        } catch (Exception e) {
+            logger.error("Error approving task with id: {}", id);
+            throw new RuntimeException("Error approving task");
+        }
+    }
+
+    @Override
+    public JobAdvertisementDto reject(UUID id, String userEmail) {
+        logger.info("Rejecting task with id: {}, and userEmail: {}", id.toString(), userEmail);
+
+        try {
+            User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
+            JobAdvertisement job = jobAdvertisementRepository.findByIdAndUser(id, user).orElseThrow(() -> new RuntimeException("Task not found"));
+
+            job.setStatus(AdvertisementStatus.REJECTED);
+            job.setReviewer(user);
+
+            JobAdvertisement updatedJob = jobAdvertisementRepository.save(job);
+
+            return new JobAdvertisementDto(
+                    updatedJob.getId(),
+                    updatedJob.getTitle(),
+                    updatedJob.getDescription(),
+                    updatedJob.getStatus(),
+                    updatedJob.getCreatedAt()
+            );
+        } catch (Exception e) {
+            logger.error("Error rejecting task with id: {}", id);
+            throw new RuntimeException("Error rejecting task");
+        }
+    }
+
+    @Override
+    public Set<JobAdvertisementDto> getPublished() {
+        logger.info("Getting published tasks");
+
+        try {
+            return jobAdvertisementRepository.findByStatus(AdvertisementStatus.PUBLISHED).stream()
+                    .map(jobAdvertisement -> new JobAdvertisementDto(
+                            jobAdvertisement.getId(),
+                            jobAdvertisement.getTitle(),
+                            jobAdvertisement.getDescription(),
+                            jobAdvertisement.getStatus(),
+                            jobAdvertisement.getCreatedAt()
+                    ))
+                    .collect(Collectors.toSet());
+        } catch (Exception e) {
+            logger.error("Error getting published tasks", e);
+            throw new RuntimeException("Error getting published tasks", e);
+        }
+    }
 }

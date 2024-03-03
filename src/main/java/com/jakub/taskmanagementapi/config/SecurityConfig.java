@@ -40,7 +40,7 @@ public class SecurityConfig {
 
         // Add JWT token filter
         http.authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login").permitAll()
+                        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/gateway/jobs").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

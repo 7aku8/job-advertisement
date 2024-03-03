@@ -14,4 +14,12 @@ public interface JobAdvertisementService {
     JobAdvertisementDto getById(UUID id, String userEmail);
 
     void delete(UUID id, String userEmail);
+
+    Set<JobAdvertisementDto> getWaitingForReview();
+
+    JobAdvertisementDto approve(UUID id, String userEmail);
+
+    JobAdvertisementDto reject(UUID id, String userEmail);
+
+    Set<JobAdvertisementDto> getPublished();
 }
