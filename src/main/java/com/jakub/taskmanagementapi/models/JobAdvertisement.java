@@ -2,9 +2,8 @@ package com.jakub.taskmanagementapi.models;
 
 import com.jakub.taskmanagementapi.models.enums.AdvertisementStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,14 +24,12 @@ public class JobAdvertisement {
     private UUID id;
 
     @NotNull(message = "Title is required.")
-    @Min(value = 2, message = "Title must be at least 2 characters long.")
-    @Max(value = 50, message = "Title must be at most 50 characters long.")
+    @Size(min = 2, max = 50, message = "Title must be between 2 and 50 characters long.")
     @Column(name = "title")
     private String title;
 
     @NotNull(message = "Description is required.")
-    @Min(value = 2, message = "Description must be at least 2 characters long.")
-    @Max(value = 500, message = "Description must be at most 500 characters long.")
+    @Size(min = 2, max = 500, message = "Description must be between 2 and 500 characters long.")
     @Column(name = "description")
     private String description;
 

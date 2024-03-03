@@ -30,7 +30,7 @@ CREATE TABLE "job_advertisements"
     "id"          uuid PRIMARY KEY NOT NULL,
     "status"      varchar(30) NOT NULL DEFAULT 'REVIEW',
     "user_id"     uuid             NOT NULL,
-    "reviewer_id" uuid              NOT NULL,
+    "reviewer_id" uuid,
     "title"       citext           NOT NULL,
     "description" varchar          NOT NULL,
     "created_at"  timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP,

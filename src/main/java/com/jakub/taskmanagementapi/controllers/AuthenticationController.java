@@ -22,9 +22,9 @@ public class AuthenticationController {
     public ResponseEntity<LoginRes> authenticateUser(
             @Valid @RequestBody LoginReq loginReq
     ) {
-        authenticationService.login(loginReq);
+        String token = authenticationService.login(loginReq);
 
-        return ResponseEntity.ok(new LoginRes(loginReq.getEmail(), "User logged in successfully!"));
+        return ResponseEntity.ok(new LoginRes(loginReq.getEmail(), token, "User logged in successfully!"));
     }
 
     @PostMapping("/register")
