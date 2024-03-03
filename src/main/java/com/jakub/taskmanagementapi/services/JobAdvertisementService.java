@@ -7,10 +7,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface JobAdvertisementService {
-    JobAdvertisementDto createTask(JobAdvertisement task, String userEmail);
+    JobAdvertisementDto create(JobAdvertisement task, String userEmail);
 
-    Set<JobAdvertisementDto> getTasks(String userEmail);
+    Set<JobAdvertisementDto> get(String userEmail);
 
-    JobAdvertisementDto getTask(UUID id, String userEmail);
+    JobAdvertisementDto getById(UUID id, String userEmail);
 
+    void delete(UUID id, String userEmail);
 }

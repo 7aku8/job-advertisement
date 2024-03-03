@@ -41,7 +41,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-    
+
     @OneToMany(mappedBy = "user")
     private Set<JobAdvertisement> jobAdvertisements;
 

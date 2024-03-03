@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,7 +16,7 @@ import java.util.UUID;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private String id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "name")

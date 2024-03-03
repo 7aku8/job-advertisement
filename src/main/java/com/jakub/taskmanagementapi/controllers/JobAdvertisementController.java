@@ -24,7 +24,7 @@ public class JobAdvertisementController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping()
     public ResponseEntity<Iterable<JobAdvertisementDto>> getTasks(Principal principal) {
-        return new ResponseEntity<>(jobAdvertisementService.getTasks(principal.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(jobAdvertisementService.get(principal.getName()), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -33,7 +33,7 @@ public class JobAdvertisementController {
             Principal principal,
             @PathVariable UUID jobAdvertisementId
     ) {
-        return new ResponseEntity<>(jobAdvertisementService.getTask(jobAdvertisementId, principal.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(jobAdvertisementService.getById(jobAdvertisementId, principal.getName()), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -42,14 +42,24 @@ public class JobAdvertisementController {
             Principal principal,
             @Valid @RequestBody CreateJobReq createJobReq
     ) {
-        JobAdvertisementDto createdJob = jobAdvertisementService.createTask(
+        JobAdvertisementDto createdJob = jobAdvertisementService.create(
                 createJobReq.toJobAdvertisement(),
                 principal.getName()
         );
 
         return new ResponseEntity<>(
-                new CreateJobRes(createdJob.getId().toString(), "Job created successfully!"),
+                new CreateJobRes(createdJob.getId(), "Job created successfully!"),
                 HttpStatus.CREATED
         );
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/{jobAdvertisementId}")
+    public ResponseEntity<String> deleteTask(
+            Principal principal,
+            @PathVariable UUID jobAdvertisementId
+    ) {
+        jobAdvertisementService.delete(jobAdvertisementId, principal.getName());
+        return new ResponseEntity<>("Job deleted successfully!", HttpStatus.OK);
     }
 }

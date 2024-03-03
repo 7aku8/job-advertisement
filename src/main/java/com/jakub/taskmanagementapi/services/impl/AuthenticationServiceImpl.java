@@ -74,18 +74,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String encryptedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encryptedPassword);
 
-            Role role;
+            Optional<Role> role;
             if (isAdmin) {
                 role = roleRepository.findByName(RoleName.ADMIN);
             } else {
                 role = roleRepository.findByName(RoleName.USER);
             }
 
-            if (role == null) {
+            if (role.isEmpty()) {
                 throw new IllegalStateException("Role not found");
             }
 
-            user.setRoles(Set.of(role));
+            user.setRoles(Set.of(role.get()));
             userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             logger.error("Error creating user: " + e.getMessage(), e);

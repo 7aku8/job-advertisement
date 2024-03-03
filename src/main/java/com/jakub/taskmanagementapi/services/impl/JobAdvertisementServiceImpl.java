@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,7 +26,9 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
     private final UserRepository userRepository;
 
     @Override
-    public JobAdvertisementDto createTask(JobAdvertisement task, String userEmail) {
+    public JobAdvertisementDto create(JobAdvertisement task, String userEmail) {
+        logger.info("Creating task for user: {}", userEmail);
+
         try {
             User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -44,14 +47,13 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
                     createdAdvertisement.getCreatedAt()
             );
         } catch (Exception e) {
-            System.out.println("Error creating task");
-            System.out.print(e.getMessage());
+            logger.error("Error creating task for user: {}", userEmail);
             throw new RuntimeException("Error creating task");
         }
     }
 
     @Override
-    public Set<JobAdvertisementDto> getTasks(String userEmail) {
+    public Set<JobAdvertisementDto> get(String userEmail) {
         logger.info("Getting tasks for user: {}", userEmail);
 
         try {
@@ -66,21 +68,29 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
                             jobAdvertisement.getCreatedAt()
                     ))
                     .collect(Collectors.toSet());
+        } catch (NoSuchElementException e) {
+            logger.error("Task or user not found: {}", e.getMessage());
+            throw new RuntimeException("Error getting tasks: " + e.getMessage(), e);
         } catch (Exception e) {
-            logger.error("Error getting tasks for user: {}", userEmail);
-            throw new RuntimeException("Error getting tasks");
+            logger.error("Error getting tasks", e);
+            throw new RuntimeException("Error getting tasks", e);
         }
     }
 
     @Override
-    public JobAdvertisementDto getTask(UUID id, String userEmail) {
-        logger.info("Getting task with id: {}, and userEmail: {}", id.toString(), userEmail);
+    public JobAdvertisementDto getById(UUID id, String userEmail) {
+        logger.info("Getting task with id: {}, and userEmail: {}", id, userEmail);
 
         try {
+            logger.info("asdfasdf" + jobAdvertisementRepository.findById(UUID.fromString("b56df952-ae47-484e-9f6b-bc3d46c4a2b6")));
+
             JobAdvertisement job = jobAdvertisementRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
             User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
 
+            System.out.println(user.getEmail() + " " + userEmail);
+
             if (!user.getEmail().equals(userEmail)) {
+                logger.error("Cannot get task for another user");
                 throw new RuntimeException("Cannot get task for another user");
             }
 
@@ -91,9 +101,32 @@ public class JobAdvertisementServiceImpl implements JobAdvertisementService {
                     job.getStatus(),
                     job.getCreatedAt()
             );
+        } catch (NoSuchElementException e) {
+            logger.error("Task or user not found: {}", e.getMessage());
+            throw new RuntimeException("Error getting task: " + e.getMessage(), e);
         } catch (Exception e) {
-            logger.error("Error getting task with id: {}", id);
-            throw new RuntimeException("Error getting task");
+            logger.error("Error getting task with id: {}", id, e);
+            throw new RuntimeException("Error getting task", e);
+        }
+    }
+
+    @Override
+    public void delete(UUID id, String userEmail) {
+        logger.info("Deleting task with id: {}, and userEmail: {}", id.toString(), userEmail);
+
+        try {
+            JobAdvertisement job = jobAdvertisementRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+            User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
+
+            if (!user.getEmail().equals(userEmail)) {
+                logger.error("Cannot delete task for another user");
+                throw new RuntimeException("Cannot delete task for another user");
+            }
+
+            jobAdvertisementRepository.deleteById(job.getId());
+        } catch (Exception e) {
+            logger.error("Error deleting task with id: {}", id);
+            throw new RuntimeException("Error deleting task");
         }
     }
 }
