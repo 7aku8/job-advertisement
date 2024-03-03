@@ -1,0 +1,369 @@
+{
+	"info": {
+		"_postman_id": "dbf04611-f618-474e-8f09-b6d61e932fba",
+		"name": "Task Management API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27298131"
+	},
+	"item": [
+		{
+			"name": "Job Advertisements",
+			"item": [
+				{
+					"name": "Get by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/job-advertisements/:jobAdvertisementId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"job-advertisements",
+								":jobAdvertisementId"
+							],
+							"variable": [
+								{
+									"key": "jobAdvertisementId",
+									"value": "16bdcf48-3854-4d95-b3b7-f28e1db9b78f",
+									"description": "ID of job advertisement"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test5\",\n    \"description\": \"Description2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/job-advertisements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"job-advertisements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/job-advertisements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"job-advertisements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/job-advertisements/:jobAdvertisementId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"job-advertisements",
+								":jobAdvertisementId"
+							],
+							"variable": [
+								{
+									"key": "jobAdvertisementId",
+									"value": "16bdcf48-3854-4d95-b3b7-f28e1db9b78f",
+									"description": "ID of job advertisement"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Collection of endpoints for user to manipulate own job advertisements.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWt1YndvbGFrQGdtYWlsLmNvbSIsImV4cCI6MTkyNTQ3MjM4OX0.C3uIS9ltN31T5s7r6-HEanEaLDV1T6FJxH4asFuM36U",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admins",
+			"item": [
+				{
+					"name": "Get waiting for review",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/job-admin/waiting",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"job-admin",
+								"waiting"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/job-admin/approve/:jobAdvertisementId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"job-admin",
+								"approve",
+								":jobAdvertisementId"
+							],
+							"variable": [
+								{
+									"key": "jobAdvertisementId",
+									"value": "8952d2e3-0866-42cd-bfff-ecea84f2b8e6",
+									"description": "Job Advertisement ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/job-admin/reject/:jobAdvertisementId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"job-admin",
+								"reject",
+								":jobAdvertisementId"
+							],
+							"variable": [
+								{
+									"key": "jobAdvertisementId",
+									"value": "f4ba3841-cdaf-47ee-acbb-788270acfc55",
+									"description": "Job Advertisement ID"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Collection of requests for administrators to review added posts before displaying them in the website.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWt1YndvbGFrQGdtYWlsLmNvbSIsImV4cCI6MTkyNTQ3Mzg3NX0.mYQ0zu9gPWms-9cK0hUBfA-xyeuoegAl37a9LpbMl1Y",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"jakubwolak@gmail.com\",\n    \"password\": \"testowehaslo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Krzysztof\",\n    \"lastName\": \"Kon\",\n    \"email\": \"testowyemail@gmail.com\",\n    \"password\": \"testowehaslo\",\n    \"isAdmin\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Collection of requests to handle authentication and authorization."
+		},
+		{
+			"name": "Gateway",
+			"item": [
+				{
+					"name": "Get all published",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/gateway/jobs",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"gateway",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Collection of requests for website to fetch job advertisements that should be displayed for visitors."
+		}
+	]
+}
